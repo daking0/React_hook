@@ -1,17 +1,40 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const content = [
+  {
+    tab: "Section 1",
+    content: "I'm the content of the Section 1"
+  },
+  {
+    tab: "Section 2",
+    content: "I'm the content of the Section 2"
+  }
+];
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const useTabs = (initialTab, allTabs) => {
+  const [currentIndex, setCurrentIndex] = useState(initialTab);
+  if (!allTabs || !Array.isArray(allTabs)) {
+    return;
+  }
+  
+  return {
+    currentItem: allTabs[currentIndex],
+    changeItem: setCurrentIndex
+  };
+};
+
+const App = () => {
+  const { currentItem, changeItem } = useTabs(0, content);
+  return (
+    <div>
+      {content.map((section, index) => (
+        <button onClick={() => changeItem(index)}>{section.tab}</button>
+      ))}
+      <div>{currentItem.content}</div>
+    </div>
+  );
+};
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
